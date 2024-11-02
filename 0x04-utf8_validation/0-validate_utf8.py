@@ -46,11 +46,3 @@ def validUTF8(data):
         return True
     else:
         return False
-
-
-print(validUTF8([467, 133, 108]))
-print(validUTF8([240, 188, 128, 167]))
-print(validUTF8([235, 140]))
-print(validUTF8([345, 467]))
-print(validUTF8([250, 145, 145, 145,145]))
-print(validUTF8([0, 0, 0, 0, 0, 0]))
