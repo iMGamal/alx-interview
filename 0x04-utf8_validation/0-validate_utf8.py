@@ -27,17 +27,17 @@ def validUTF8(data):
             s = s.zfill(8)
         new.append(s)
 
-    if int(new[0][:5]) == 11110:
+    if int(new[0][:5]) == 11110 and len(new) >= 4:
         if int(new[1][:2]) == 10 and int(new[2][:2]) == 10 and int(new[3][:2]) == 10:
             return True
         else:
             return False
-    elif int(new[0][:4]) == 1110:
+    elif int(new[0][:4]) == 1110 and len(new) >= 3:
         if int(new[1][:2]) == 10 and int(new[2][:2]) == 10:
             return True
         else:
             return False
-    elif int(new[0][:3]) == 110:
+    elif int(new[0][:3]) == 110 and len(new) >= 2:
         if int(new[1][:2]) == 10:
             return True
         else:
@@ -46,3 +46,11 @@ def validUTF8(data):
         return True
     else:
         return False
+
+
+print(validUTF8([467, 133, 108]))
+print(validUTF8([240, 188, 128, 167]))
+print(validUTF8([235, 140]))
+print(validUTF8([345, 467]))
+print(validUTF8([250, 145, 145, 145,145]))
+print(validUTF8([0, 0, 0, 0, 0, 0]))
