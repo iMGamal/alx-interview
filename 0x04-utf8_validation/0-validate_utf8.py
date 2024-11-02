@@ -4,7 +4,7 @@
 
 def validUTF8(data):
     """Check whether the passed data fits UTF-8."""
-    if data == []:
+    if len(data) == 0:
         return False
     elif len(data) in range(1, 5):
         return True
