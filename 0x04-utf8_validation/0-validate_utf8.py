@@ -12,7 +12,7 @@ def validUTF8(data):
         return True
 
     if data[0] == 0:
-        for i in data:
+        for i in range(len(data)):
             temp = 0
             if data[i] == temp:
                 new.append(data[i])
@@ -21,14 +21,7 @@ def validUTF8(data):
             return True
 
     for j in range(len(data)):
-        binary = ""
-        while data[j] > 0:
-            binary = str(data[j] & 1) + binary
-            data[j] = data[j] >> 1
-
-        if len(binary) < 8:
-           binary = binary.zfill(8)
-
+        binary = bin(data[j])
         bit.append(binary)
 
     for k in range(len(bit)):
@@ -58,8 +51,7 @@ def validUTF8(data):
             else:
                 pool.append(False)
 
-    for m in range(len(pool)):
-        if pool[m] == False:
-            return False
+    if False in pool:
+        return False
 
     return True
