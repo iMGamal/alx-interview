@@ -7,10 +7,10 @@ def validUTF8(data):
     num_bytes = 0
 
     for num in data:
-        binary = bin(num)[2:].zfill(8)
-
         if num < 0 or num > 255:
             return False
+
+        binary = bin(num)[2:].zfill(8)
 
         if num_bytes == 0:
             if binary.startswith('0'):
