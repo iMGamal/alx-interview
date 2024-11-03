@@ -6,6 +6,9 @@ def validUTF8(data):
     """Check 2-byte and 1-byte representation of UTF-8."""
     new = []
 
+    if data == []:
+        return True
+
     for i in range(len(data)):
         temp2 = data[i]
         b = ''
