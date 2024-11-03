@@ -6,8 +6,9 @@ def validUTF8(data):
     """Check for utf-8 encoding validity."""
     num_bytes = 0
 
-    if i > 255 in data:
-        return False
+    for i in range(len(data)):
+        if data[i] > 255:
+            return False
 
     for num in data:
         binary = bin(num)[2:].zfill(8)
