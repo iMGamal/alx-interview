@@ -3,27 +3,44 @@
 
 
 def validUTF8(data):
-    """Check if the data is a valid UTF-8 encoding."""
-    num_bytes = 0
+    """Check 2-byte and 1-byte representation of UTF-8."""
+    new = []
 
-    for num in data:
-        if num < 0 or num > 255:
-            return False
-        
-        if num_bytes > 0:
-            if (num >> 6) != 0b10:
-                return False
-            num_bytes -= 1
+    if data == []:
+        return True
+
+    for i in range(len(data)):
+        temp2 = data[i]
+        b = ''
+
+        while temp2 > 0:
+            temp1 = temp2 % 2
+            n = str(temp1)
+            b += n
+            temp2 = temp2 // 2
+
+        s = b[::-1]
+        if len(s) < 8:
+            s = s.zfill(8)
+        new.append(s)
+
+    if int(new[0][:5]) == 11110 and len(new) >= 4:
+        if int(new[1][:2]) == 10 and int(new[2][:2]) == 10:
+            if int(new[3][:2]) == 10:
+                return True
         else:
-            if (num >> 7) == 0b0:
-                num_bytes = 0
-            elif (num >> 5) == 0b110:
-                num_bytes = 1
-            elif (num >> 4) == 0b1110:
-                num_bytes = 2
-            elif (num >> 3) == 0b11110:
-                num_bytes = 3
-            else:
-                return False
-
-    return num_bytes == 0
+            return False
+    elif int(new[0][:4]) == 1110 and len(new) >= 3:
+        if int(new[1][:2]) == 10 and int(new[2][:2]) == 10:
+            return True
+        else:
+            return False
+    elif int(new[0][:3]) == 110 and len(new) >= 2:
+        if int(new[1][:2]) == 10:
+            return True
+        else:
+            return False
+    elif int(new[0][:1]) == 0:
+        return True
+    else:
+        return False
