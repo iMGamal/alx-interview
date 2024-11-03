@@ -3,44 +3,63 @@
 
 
 def validUTF8(data):
-    """Check 2-byte and 1-byte representation of UTF-8."""
+    """Check for utf-8 encoding validity."""
     new = []
+    bit = []
+    pool = []
 
     if data == []:
         return True
 
-    for i in range(len(data)):
-        temp2 = data[i]
-        b = ''
+    if data[0] == 0:
+        for i in data:
+            temp = 0
+            if data[i] == temp:
+                new.append(data[i])
 
-        while temp2 > 0:
-            temp1 = temp2 % 2
-            n = str(temp1)
-            b += n
-            temp2 = temp2 // 2
-
-        s = b[::-1]
-        if len(s) < 8:
-            s = s.zfill(8)
-        new.append(s)
-
-    if int(new[0][:5]) == 11110 and len(new) >= 4:
-        if int(new[1][:2]) == 10 and int(new[2][:2]) == 10:
-            if int(new[3][:2]) == 10:
-                return True
-        else:
-            return False
-    elif int(new[0][:4]) == 1110 and len(new) >= 3:
-        if int(new[1][:2]) == 10 and int(new[2][:2]) == 10:
+        if len(data) == len(new):
             return True
-        else:
+
+    for j in range(len(data)):
+        binary = ""
+        while data[j] > 0:
+            binary = str(data[j] & 1) + binary
+            data[j] = data[j] >> 1
+
+        if len(binary) < 8:
+           binary = binary.zfill(8)
+
+        bit.append(binary)
+
+    for k in range(len(bit)):
+        if int(bit[k][:5]) == 11110:
+            temp1 = 11110
+            temp2 = 3
+        elif int(bit[k][:4]) == 1110:
+            temp1 = 1110
+            temp2 = 2
+        elif int(bit[k][:3]) == 110:
+            temp1 = 110
+            temp2 = 1
+        elif int(bit[k][:1]) == 0:
+            pool.append(True)
+            temp2 = 0
+
+        for l in range(k + 1, (k + 1) + temp2):
+            if temp1 == 11110 and len(bit[k + 1 : k + 4]) == 3:
+                if int(bit[l][:2]) == 10:
+                    continue
+            elif temp1 == 1110 and len(bit[k + 1 : k + 3]) == 2:
+                if int(bit[l][:2]) == 10:
+                    continue
+            elif temp1 == 110 and len(bit[k + 1 : k + 2]):
+                if int(bit[l][:2]) == 10:
+                    continue
+            else:
+                pool.append(False)
+
+    for m in range(len(pool)):
+        if pool[m] == False:
             return False
-    elif int(new[0][:3]) == 110 and len(new) >= 2:
-        if int(new[1][:2]) == 10:
-            return True
-        else:
-            return False
-    elif int(new[0][:1]) == 0:
-        return True
-    else:
-        return False
+
+    return True
